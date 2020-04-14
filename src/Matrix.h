@@ -118,15 +118,16 @@ public:
 	{
 		return *this;
 	}
-
-	Matrix<T>& operator-()
-	{
-		for (Index i = 0; i < size(); i++)
-			_data[i] = -_data[i];
-
-		return *this;
-	}
 	
+	Matrix<T> operator-() const
+	{
+		Matrix<T> m(_iRows,_iColumns);
+		for (Index i = 0; i < size(); i++)
+			m._data[i] = -_data[i];
+
+		return m;
+	}
+
 	Index rows() const
     {
         return _iRows;

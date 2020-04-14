@@ -526,7 +526,7 @@ void NetTrain::train_batch(const MatrixFloat& mSample, const MatrixFloat& mTruth
 {
 	//forward pass with store
 	_inOut[0] = mSample;
-	for (int i = 0; i < _iNbLayers; i++)
+	for (size_t i = 0; i < _iNbLayers; i++)
 		_pNet->layer(i).forward(_inOut[i], _inOut[i + 1]);
 
 	//compute error gradient
