@@ -74,7 +74,6 @@ void MainWindow::init_all()
     delete _pDataSource;
     _pDataSource=new DataSourceFunctions;
 	_pDataSource->load("Sin");
-//	_pEngine->net().set_input_size(_pDataSource->data_size());
 
     ui->frameLearning->init();
     ui->frameGlobal->init();

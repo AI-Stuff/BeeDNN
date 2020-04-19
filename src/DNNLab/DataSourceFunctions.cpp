@@ -12,7 +12,14 @@ bool DataSourceFunctions::load(const string& sName)
 	if (DataSource::load(sName))
 		return true;
 
-	load_function();
+	_sName = sName;
+	if (sName == "And")
+		load_and();
+	else if (sName == "Xor")
+		load_xor();
+	else
+		load_function();
+	
 	return true;
 }
 ////////////////////////////////////////////////////////////////////////

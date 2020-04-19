@@ -10,7 +10,7 @@ class DataSource
 {
 public:
     DataSource();
-    ~DataSource();
+    virtual ~DataSource();
 
     void clear();
 
