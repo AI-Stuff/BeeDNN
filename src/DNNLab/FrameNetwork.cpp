@@ -16,6 +16,7 @@
 #include "LayerGaussianDropout.h"
 #include "LayerGlobalGain.h"
 #include "LayerGlobalBias.h"
+#include "LayerGlobalAffine.h"
 #include "LayerBias.h"
 #include "LayerGain.h"
 #include "LayerUniformNoise.h"
@@ -244,7 +245,10 @@ void FrameNetwork::on_twNetwork_cellChanged(int row, int column)
 			else if (sType == "GlobalBias")
 				_pNet->add(new LayerGlobalBias());
 			
-            else if (sType == "Bias")
+			else if (sType == "GlobalAffine")
+				_pNet->add(new LayerGlobalAffine());
+			
+			else if (sType == "Bias")
                 _pNet->add(new LayerBias());
 
 			else if (sType == "ChannelBias")
@@ -326,8 +330,9 @@ void FrameNetwork::add_new_row(int iRow)
 	qcbType->addItem("GaussianNoise");
 	qcbType->addItem("GaussianDropout");
 	qcbType->addItem("GlobalGain");
-	qcbType->addItem("Gain");
 	qcbType->addItem("GlobalBias");
+	qcbType->addItem("GlobalAffine");
+	qcbType->addItem("Gain");
     qcbType->addItem("Bias");
 	qcbType->addItem("PRelu");
 	qcbType->addItem("RRelu");

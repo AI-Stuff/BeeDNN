@@ -206,6 +206,7 @@
     <ClCompile Include="..\CIFAR10Reader.cpp" />
     <ClCompile Include="..\ConfusionMatrix.cpp" />
     <ClCompile Include="..\DataSource.cpp" />
+    <ClCompile Include="..\LayerGlobalAffine.cpp" />
     <ClCompile Include="..\LayerSoftmin.cpp" />
     <ClCompile Include="DataSourceFunctions.cpp" />
     <ClCompile Include="FrameGlobal.cpp" />
@@ -248,6 +249,7 @@
     <ClInclude Include="..\CIFAR10Reader.h" />
     <ClInclude Include="..\ConfusionMatrix.h" />
     <ClInclude Include="..\DataSource.h" />
+    <ClInclude Include="..\LayerGlobalAffine.h" />
     <ClInclude Include="..\LayerSoftmin.h" />
     <QtMoc Include="FrameGlobal.h">
     </QtMoc>

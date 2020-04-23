@@ -22,6 +22,7 @@
 #include "LayerGaussianNoise.h"
 #include "LayerGlobalBias.h"
 #include "LayerGlobalGain.h"
+#include "LayerGlobalAffine.h"
 #include "LayerPoolMax2D.h"
 #include "LayerPRelu.h"
 #include "LayerRRelu.h"
@@ -70,16 +71,22 @@ void write(const Net& net,string & s)
             LayerGlobalGain* l=static_cast<LayerGlobalGain*>(layer);
             ss << "Layer" << i+1 << ".globalGain=" << l->weights()(0) << endl;
         }
-
-		else if (layer->type() == "Gain")
-		{
-			ss << "Layer" << i+1 << ".gain=" << toString(layer->weights()) << endl;
-		}
 		
 		else if(layer->type()=="GlobalBias")
         {
             ss << "Layer" << i+1 << ".globalBias=" << layer->bias()(0) << endl;
         }
+
+		else if (layer->type() == "GlobalAffine")
+		{
+			ss << "Layer" << i + 1 << ".globalGain=" << layer->weights()(0) << endl;
+			ss << "Layer" << i + 1 << ".globalBias=" << layer->bias()(0) << endl;
+		}
+
+		else if (layer->type() == "Gain")
+		{
+			ss << "Layer" << i + 1 << ".gain=" << toString(layer->weights()) << endl;
+		}
 
 		else if(layer->type()=="ChannelBias")
         {
@@ -99,7 +106,20 @@ void write(const Net& net,string & s)
 			ss << "Layer" << i + 1 << ".bias=" << toString(layer->bias()) << endl;
 		}
 
-        else if(layer->type()=="Dropout")
+		else if (layer->type() == "ChannelBias")
+		{
+			LayerChannelBias* l = static_cast<LayerChannelBias*>(layer);
+
+			Index iRows, iCols, iChannels;
+			l->get_params(iRows, iCols, iChannels);
+
+			ss << "Layer" << i + 1 << ".rows=" << iRows << endl;
+			ss << "Layer" << i + 1 << ".cols=" << iCols << endl;
+			ss << "Layer" << i + 1 << ".channels=" << iChannels << endl;
+			ss << "Layer" << i + 1 << ".bias=" << endl << toString(layer->bias()) << endl;
+		}
+		
+		else if(layer->type()=="Dropout")
         {
             LayerDropout* l=static_cast<LayerDropout*>(layer);
             ss << "Layer" << i+1 << ".rate=" << l->get_rate() << endl;
@@ -232,6 +252,21 @@ void read(const string& s,Net& net)
             mf(0) = fBias;
             net.layer(net.size() - 1).bias() = mf;
         }
+
+		else if (sType == "GlobalAffine")
+		{
+			float fGain = stof(find_key(s, sLayer + ".globalGain"));
+			float fBias = stof(find_key(s, sLayer + ".globalBias"));
+			net.add(new LayerGlobalAffine());
+
+			MatrixFloat mb(1, 1);
+			mb(0) = fBias;
+			net.layer(net.size() - 1).bias() = mb;
+
+			MatrixFloat mg(1, 1);
+			mg(0) = fGain;
+			net.layer(net.size() - 1).weights() = mg;
+		}
 
 		else if (sType == "ChannelBias")
 		{

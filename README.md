@@ -11,7 +11,7 @@ There is also a GUI application (in Qt) for live tests.
 
 Layers:
 - Dense, with or without bias
-- Gain, GlobalGain, Bias, GlobalBias
+- GlobalGain, GlobalBias GlobalAffine, Gain, Bias 
 - Convolution2D, PoolMax2D, ChannelBias
 - Softmax, Softmin
 - PRelu, RRelu
@@ -46,6 +46,9 @@ Loss functions:
 Overfitting:
 - Layers: Dropout, GaussianNoise, GaussianDropout, UniformNoise
 - Regularizer: GradientClip, GradientClipTanh, L1, L2
+
+Data augmentation
+- WIP
 
 Learning and optimization:
 - Classification or regression, test and/or learn
