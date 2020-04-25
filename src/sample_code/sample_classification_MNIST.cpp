@@ -86,15 +86,15 @@ int main()
 
 	MatrixFloat mClassTest;
 	net.classify(mValImages, mClassTest);
-	ConfusionMatrix cmTest;
-	ClassificationResult crTest = cmTest.compute(mValLabels, mClassTest);
-	cout << "Validation accuracy: " << crTest.accuracy << " %" << endl;
-	cout << "Validation confusion matrix:" << endl << crTest.mConfMat << endl;
+	ConfusionMatrix cmVal;
+	ClassificationResult crVal = cmVal.compute(mValLabels, mClassTest);
+	cout << "Validation accuracy: " << crVal.accuracy << " %" << endl;
+	cout << "Validation confusion matrix:" << endl << toString(crVal.mConfMat) << endl;
 
 	//testu function
-	if (crTest.accuracy < 98.1f)
+	if (crVal.accuracy < 98.1f)
 	{
-		cout << "Test failed! accuracy=" << crTest.accuracy << endl;
+		cout << "Test failed! accuracy=" << crVal.accuracy << endl;
 		return -1;
 	}
 
