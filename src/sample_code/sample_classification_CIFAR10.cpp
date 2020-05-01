@@ -1,9 +1,10 @@
-// simple toy classification CIFAR10, with a convolutional Layers, low accuracy (60%), but simple; 30s /epoch
+// simple toy classification CIFAR10, with a convolutional Layers, low accuracy (60% after 20 epochs), 40s /epoch
+// It shows and save the current best solution on disk
+// To stop by anytime, type CTRL+C"
 
-// use a DataSource for Data augmentations
+// use a DataSource for Data augmentations (WIP)
 
 #include <chrono>
-#include <iostream>
 #include <iostream>
 #include <iomanip>
 #include <fstream>
@@ -57,7 +58,10 @@ void epoch_callback()
 //////////////////////////////////////////////////////////////////////////////
 int main()
 {
-	cout << "Simple toy classification CIFAR10, low accuracy (60%), but simple 30s /epoch" << endl;
+	cout << "Simple toy classification CIFAR10, low accuracy (60% after 20 epochs), 40s /epoch" << endl;
+	cout << "It shows and save the current best solution on disk" << endl;
+	cout << "To stop by anytime, type CTRL+C" << endl;
+
 	iEpoch = 0;
 
 	//load and normalize CIFAR10 data
@@ -85,7 +89,7 @@ int main()
 
 	//setup train options
 	netTrain.set_net(net);
-	netTrain.set_epochs(20);
+	netTrain.set_epochs(50);
 	netTrain.set_batchsize(256);
 	netTrain.set_loss("SparseCategoricalCrossEntropy");
 	netTrain.set_epoch_callback(epoch_callback); //optional, show the progress

@@ -1,7 +1,6 @@
 import math
 import numpy as np
 import matplotlib.pyplot as plt
-
 import BeeDNN as nn
 
 # Simple Sinus regression ( fit) using small network

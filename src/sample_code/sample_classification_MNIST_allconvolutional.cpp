@@ -1,6 +1,6 @@
 // all convolutional MNIST classification with a conv2d (no poolmax layers)
 // accuracy > 99% after 20 epochs, 25s/epochs
-// conv2d speed is not optimized yet.
+// conv2d speed is not fully optimized yet.
 
 #include <iostream>
 #include <chrono>
@@ -45,7 +45,7 @@ int main()
 
 	cout << "all convolutional MNIST classification with a conv2d (no poolmax layers)" << endl;
 	cout << "accuracy> 99% after 20 epochs, 25s/epochs" << endl;
-	cout << "conv2d speed is not optimized yet" << endl;
+	cout << "conv2d speed is not fully optimized yet" << endl;
 
 	//load and normalize MNIST data
     cout << "Loading MNIST database..." << endl;

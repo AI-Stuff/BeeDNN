@@ -81,7 +81,7 @@ class LayerComplementaryLogLog(Layer):
       self.dydx = np.exp(x - np.exp(x))
     return 1. - np.exp(-np.exp(x))
 
-class LayerDivideBy256(Layer): # usefull for byte conversion
+class LayerDivideBy256(Layer): # usefull for fixpt code conversion
   def forward(self,x):
     if self.training:
       self.dydx = 0.00390625 # 0.00390625 == 1./256.
@@ -94,7 +94,6 @@ class LayerdSiLU(Layer):
     exinv=1./(1.+ex)
     if self.training:
       self.dydx = ex*exinv*exinv*(2.+x*(2.*ex*exinv-1.))
-
     return exinv*(1+x*ex*exinv)
 
 class LayerExponential(Layer):
