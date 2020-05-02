@@ -14,7 +14,7 @@ There is also a GUI application (in Qt) for live tests.
 
 Layers:
 - Dense, with or without bias
-- GlobalGain, GlobalBias GlobalAffine, Gain, Bias 
+- GlobalGain, GlobalBias GlobalAffine, Gain, Bias, Affine
 - Convolution2D, PoolMax2D, ChannelBias
 - Softmax, Softmin
 - PRelu, RRelu

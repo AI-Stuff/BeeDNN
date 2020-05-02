@@ -178,6 +178,7 @@
     <ClCompile Include="..\ConfusionMatrix.cpp" />
     <ClCompile Include="..\Layer.cpp" />
     <ClCompile Include="..\LayerActivation.cpp" />
+    <ClCompile Include="..\LayerAffine.cpp" />
     <ClCompile Include="..\LayerBias.cpp" />
     <ClCompile Include="..\LayerChannelBias.cpp" />
     <ClCompile Include="..\LayerConvolution2D.cpp" />
@@ -212,6 +213,7 @@
     <ClInclude Include="..\ConfusionMatrix.h" />
     <ClInclude Include="..\Layer.h" />
     <ClInclude Include="..\LayerActivation.h" />
+    <ClInclude Include="..\LayerAffine.h" />
     <ClInclude Include="..\LayerBias.h" />
     <ClInclude Include="..\LayerChannelBias.h" />
     <ClInclude Include="..\LayerConvolution2D.h" />

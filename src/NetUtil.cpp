@@ -13,12 +13,13 @@
 #include "Matrix.h"
 
 #include "LayerActivation.h"
-#include "LayerBias.h"
 #include "LayerChannelBias.h"
 #include "LayerConvolution2D.h"
 #include "LayerDense.h"
 #include "LayerDropout.h"
 #include "LayerGain.h"
+#include "LayerBias.h"
+#include "LayerAffine.h"
 #include "LayerGaussianNoise.h"
 #include "LayerGlobalBias.h"
 #include "LayerGlobalGain.h"
@@ -86,6 +87,12 @@ void write(const Net& net,string & s)
 		else if (layer->type() == "Gain")
 		{
 			ss << "Layer" << i + 1 << ".gain=" << toString(layer->weights()) << endl;
+		}
+
+		else if (layer->type() == "Affine")
+		{
+			ss << "Layer" << i + 1 << ".gain=" << toString(layer->weights()) << endl;
+			ss << "Layer" << i + 1 << ".bias=" << toString(layer->bias()) << endl;
 		}
 
 		else if(layer->type()=="ChannelBias")
@@ -244,6 +251,26 @@ void read(const string& s,Net& net)
 			net.layer(net.size() - 1).weights() = mf;
 		}
 		
+		else if (sType == "Bias")
+		{
+			string sBias = find_key(s, sLayer + ".bias");
+			MatrixFloat mf = fromString(sBias);
+			net.add(new LayerBias());
+			net.layer(net.size() - 1).bias() = mf;
+		}
+		
+		else if (sType == "Affine")
+		{
+			string sWeight = find_key(s, sLayer + ".gain");
+			MatrixFloat mw = fromString(sWeight);
+			string sBias = find_key(s, sLayer + ".bias");
+			MatrixFloat mb = fromString(sBias);
+
+			net.add(new LayerAffine());
+			net.layer(net.size() - 1).bias() = mw;
+			net.layer(net.size() - 1).weights() = mb;
+		}
+
 		else if(sType=="GlobalBias")
         {
             float fBias= stof(find_key(s,sLayer+".globalBias"));
@@ -281,14 +308,6 @@ void read(const string& s,Net& net)
 			net.layer(net.size() - 1).bias() = mf;
 		}
 		
-		else if (sType == "Bias")
-		{
-			string sBias = find_key(s, sLayer + ".bias");
-			MatrixFloat mf = fromString(sBias);
-			net.add(new LayerBias());
-			net.layer(net.size() - 1).bias() = mf;
-		}
-
         else if(sType=="Dropout")
         {
             string sRate=find_key(s,sLayer+".rate");

@@ -11,6 +11,7 @@
 #include "LayerGlobalAffine.h"
 #include "LayerBias.h"
 #include "LayerGain.h"
+#include "LayerAffine.h"
 #include "LayerUniformNoise.h"
 #include "LayerGaussianNoise.h"
 #include "LayerPRelu.h"
@@ -37,6 +38,12 @@ Layer* LayerFactory::create(const string& sLayer,float fArg1,float fArg2,float f
 	if (sLayer == "Gain")
 		return new LayerGain();
 
+	if (sLayer == "Bias")
+		return new LayerBias();
+
+	if (sLayer == "Affine")
+		return new LayerAffine();
+
 	if (sLayer == "GlobalGain")
 		return new LayerGlobalGain();
 
@@ -45,9 +52,6 @@ Layer* LayerFactory::create(const string& sLayer,float fArg1,float fArg2,float f
 
 	if (sLayer == "GlobalBias")
 		return new LayerGlobalBias();
-
-	if (sLayer == "Bias")
-		return new LayerBias();
 
 	if (sLayer == "ChannelBias")
 		return new LayerChannelBias((Index)fArg1, (Index)fArg2,(Index)fArg3);

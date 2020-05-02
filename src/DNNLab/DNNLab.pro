@@ -48,6 +48,7 @@ SOURCES += \
     ../LayerGaussianNoise.cpp \
     ../LayerGlobalGain.cpp \
     ../LayerGain.cpp \
+    ../LayerAffine.cpp \
     ../LayerGlobalBias.cpp \
     ../LayerChannelBias.cpp \
     ../LayerPRelu.cpp \
@@ -79,6 +80,7 @@ HEADERS += \
     ../LayerGaussianNoise.h \
     ../LayerGlobalGain.h \
     ../LayerGain.h \
+    ../LayerAffine.h \
     ../LayerGlobalBias.h \
     ../LayerChannelBias.h \
     ../LayerPRelu.h \

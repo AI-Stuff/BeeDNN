@@ -951,4 +951,4 @@ Layer4.bias=
 Layer5.type=Softmax
 
 Notes=
-      Toy sample: - 3s /epoch  - accuracy>98%
+ Toy sample: - 3s /epoch  - accuracy>98%

@@ -43,4 +43,4 @@ Layer3.bias=
 Layer4.type=Sigmoid
 
 Notes=
-Toy sample: - Sigmoid output + BinaryCross entropy
+ Toy sample: - Sigmoid output + BinaryCross entropy
