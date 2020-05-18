@@ -69,20 +69,20 @@ int main()
 	net.add(new LayerActivation("Relu"));
 	net.add(new LayerDropout(0.3f));
 
-	net.add(new LayerConvolution2D(12, 12, 8, 3, 3, 8));
-	net.add(new LayerChannelBias(10,10,8));
+	net.add(new LayerConvolution2D(12, 12, 8, 3, 3, 16));
+	net.add(new LayerChannelBias(10,10,16));
 	net.add(new LayerActivation("Relu"));
 	net.add(new LayerDropout(0.3f));
 
-	net.add(new LayerDense(10 * 10 * 8, 128));
+	net.add(new LayerDense(10 * 10 * 16, 256));
 
 	net.add(new LayerActivation("Relu"));
-	net.add(new LayerDense(128, 10));
+	net.add(new LayerDense(256, 10));
 	net.add(new LayerSoftmax());
 
 	//set train options
 	netTrain.set_net(net);
-	netTrain.set_epochs(20);
+	netTrain.set_epochs(30);
 	netTrain.set_batchsize(32);
 	netTrain.set_loss("SparseCategoricalCrossEntropy");
 	netTrain.set_epoch_callback(epoch_callback); //optional, show progress

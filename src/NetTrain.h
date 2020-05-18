@@ -102,7 +102,7 @@ private:
 	float _fOnlineLoss;
 
 	bool _bKeepBest;
-	Index _iBatchSize;
+	Index _iBatchSize,_iBatchSizeAdjusted;
 	Index _iValidationBatchSize;
 	int _iEpochs;
 	bool _bClassBalancingWeightLoss;

@@ -17,7 +17,7 @@ using namespace std;
 #include "LayerSoftmax.h"
 
 Net net;
-NetTrainHogWild netTrain;
+NetTrainHogwild netTrain;
 MatrixFloat mRefImages, mRefLabels, mValImages, mValLabels;
 int iEpoch;
 chrono::steady_clock::time_point start;

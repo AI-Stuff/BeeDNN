@@ -124,6 +124,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(EIGEN_PATH);..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <EnablePREfast>false</EnablePREfast>
+      <OpenMPSupport>true</OpenMPSupport>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -166,6 +167,7 @@
       <EnableParallelCodeGeneration>false</EnableParallelCodeGeneration>
       <EnablePREfast>false</EnablePREfast>
       <LanguageStandard>stdcpp14</LanguageStandard>
+      <OpenMPSupport>true</OpenMPSupport>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -187,7 +189,7 @@
     <ClCompile Include="..\MNISTReader.cpp" />
     <ClCompile Include="..\Net.cpp" />
     <ClCompile Include="..\NetTrain.cpp" />
-    <ClCompile Include="..\NetTrainHogWild.cpp" />
+    <ClCompile Include="..\NetTrainHogwild.cpp" />
     <ClCompile Include="..\Optimizer.cpp" />
     <ClCompile Include="..\Regularizer.cpp" />
     <ClCompile Include="sample_classification_MNIST.cpp" />
@@ -205,7 +207,7 @@
     <ClInclude Include="..\MNISTReader.h" />
     <ClInclude Include="..\Net.h" />
     <ClInclude Include="..\NetTrain.h" />
-    <ClInclude Include="..\NetTrainHogWild.h" />
+    <ClInclude Include="..\NetTrainHogwild.h" />
     <ClInclude Include="..\Optimizer.h" />
     <ClInclude Include="..\Regularizer.h" />
   </ItemGroup>

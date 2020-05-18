@@ -34,6 +34,7 @@ NetTrain::NetTrain():
 
     _pLoss = create_loss("MeanSquaredError");
     _iBatchSize = 32;
+	_iBatchSizeAdjusted=-1; //invalid
 	_iValidationBatchSize = 128;
 	_bKeepBest = true;
     _iEpochs = 100;
@@ -381,9 +382,9 @@ void NetTrain::train()
     Net bestNet;
 
     //accept batch size == 0 or greater than nb samples  -> full size
-    Index iBatchSizeLocal=_iBatchSize;
-    if( (iBatchSizeLocal >iNbSamples) || (iBatchSizeLocal ==0) )
-        iBatchSizeLocal =iNbSamples;
+    _iBatchSizeAdjusted=_iBatchSize;
+    if( (_iBatchSizeAdjusted >iNbSamples) || (_iBatchSizeAdjusted ==0) )
+        _iBatchSizeAdjusted =iNbSamples;
 
     _inOut.resize(_iNbLayers + 1);
 
@@ -424,7 +425,7 @@ void NetTrain::train()
         MatrixFloat mSampleShuffled;
         MatrixFloat mTruthShuffled;
 
-        if (iBatchSizeLocal < iNbSamples)
+        if (_iBatchSizeAdjusted < iNbSamples)
         {
             auto vShuffle = randPerm(iNbSamples);
             applyRowPermutation(vShuffle, mSamples, mSampleShuffled);
@@ -439,7 +440,7 @@ void NetTrain::train()
 
 		_pNet->set_train_mode(true);
 
-		train_one_epoch(iBatchSizeLocal, mSampleShuffled, mTruthShuffled);
+		train_one_epoch(mSampleShuffled, mTruthShuffled);
 
 		_pNet->set_train_mode(false);
 
@@ -662,14 +663,14 @@ void NetTrain::update_class_weight()
 	_pLoss->set_class_balancing(mClassWeight);
 }
 /////////////////////////////////////////////////////////////////////////////////////////////
-void NetTrain::train_one_epoch(Index iBatchSize,const MatrixFloat& mSampleShuffled, const MatrixFloat& mTruthShuffled)
+void NetTrain::train_one_epoch(const MatrixFloat& mSampleShuffled, const MatrixFloat& mTruthShuffled)
 {
 	Index iNbSamples = mSampleShuffled.rows();
 	Index iBatchStart = 0;
 
 	while (iBatchStart < iNbSamples)
 	{
-		Index iBatchEnd = iBatchStart + iBatchSize;
+		Index iBatchEnd = iBatchStart + _iBatchSizeAdjusted;
 		if (iBatchEnd > iNbSamples)
 			iBatchEnd = iNbSamples;
 

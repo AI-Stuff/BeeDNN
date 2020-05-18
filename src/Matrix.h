@@ -19,6 +19,8 @@ using namespace std;
 
 #ifdef USE_EIGEN
 
+#define EIGEN_DONT_PARALLELIZE // keep the cpu core for upper algorithms
+
 #include "Eigen/Core"
 using namespace Eigen;
 typedef Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> MatrixFloat;

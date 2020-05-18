@@ -6,7 +6,7 @@
     in the LICENSE.txt file.
 */
 
-#include "NetTrainHogWild.h"
+#include "NetTrainHogwild.h"
 
 #include "Net.h"
 #include "Layer.h"
@@ -16,20 +16,20 @@
 #include <cassert>
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
-NetTrainHogWild::NetTrainHogWild(): NetTrain()
+NetTrainHogwild::NetTrainHogwild(): NetTrain()
 { }
 /////////////////////////////////////////////////////////////////////////////////////////////////
-NetTrainHogWild::~NetTrainHogWild()
+NetTrainHogwild::~NetTrainHogwild()
 { }
 /////////////////////////////////////////////////////////////////////////////////////////////////
-void NetTrainHogWild::train_one_epoch(Index iBatchSize, const MatrixFloat& mSampleShuffled, const MatrixFloat& mTruthShuffled)
+void NetTrainHogwild::train_one_epoch( const MatrixFloat& mSampleShuffled, const MatrixFloat& mTruthShuffled)
 {
 	Index iNbSamples = mSampleShuffled.rows();
 	Index iBatchStart = 0;
 
 	while (iBatchStart < iNbSamples)
 	{
-		Index iBatchEnd = iBatchStart + iBatchSize;
+		Index iBatchEnd = iBatchStart + _iBatchSizeAdjusted;
 		if (iBatchEnd > iNbSamples)
 			iBatchEnd = iNbSamples;
 

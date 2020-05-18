@@ -6,19 +6,22 @@
     in the LICENSE.txt file.
 */
 
-#ifndef NetTrainHogWild_
-#define NetTrainHogWild_
+// Hogwild distributed learning over mini batches, as in:
+// https://arxiv.org/pdf/1106.5730.pdf
+
+#ifndef NetTrainHogwild_
+#define NetTrainHogwild_
 
 #include "NetTrain.h"
 
-class NetTrainHogWild: public NetTrain
+class NetTrainHogwild: public NetTrain
 {
 public:
-    NetTrainHogWild();
-    virtual ~NetTrainHogWild();
+    NetTrainHogwild();
+    virtual ~NetTrainHogwild();
 
 protected:
-	virtual void train_one_epoch(Index iBatchSize, const MatrixFloat& mSampleShuffled, const MatrixFloat& mTruthShuffled) override;
+	virtual void train_one_epoch(const MatrixFloat& mSampleShuffled, const MatrixFloat& mTruthShuffled) override;
 };
 
 #endif
