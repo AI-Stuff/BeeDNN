@@ -294,6 +294,7 @@ float NetTrain::compute_loss_accuracy(const MatrixFloat &mSamples, const MatrixF
 
 	//cut in parts of size _iValidationBatchSize for a lower memory usage
 	Index iGood = 0;
+
 	for (Index iStart = 0; iStart < iNbSamples; iStart+=_iValidationBatchSize)
 	{
 		Index iEnd = iStart + _iValidationBatchSize;
@@ -301,8 +302,8 @@ float NetTrain::compute_loss_accuracy(const MatrixFloat &mSamples, const MatrixF
 			iEnd = iNbSamples;
 		Index iBatchSize = iEnd - iStart;
 
-		/*const MatrixFloat*/ mSamplesBatch = rowRange(mSamples, iStart, iEnd); // todo check no copy
-		/*const MatrixFloat*/ mTruthBatch = rowRange(mTruth, iStart, iEnd); // todo check no copy
+		mSamplesBatch = rowRange(mSamples, iStart, iEnd);
+		mTruthBatch = rowRange(mTruth, iStart, iEnd);
 		
 		_pNet->forward(mSamplesBatch, mOut);
 		fLoss+= _pLoss->compute(mOut, mTruthBatch);
@@ -431,27 +432,14 @@ void NetTrain::train()
         }
         else
         {
+			// no need to shuffle
             mSampleShuffled = mSamples; //todo remove copy
             mTruthShuffled = mTruth;
         }
 
 		_pNet->set_train_mode(true);
 
-        Index iBatchStart=0;
-
-        while(iBatchStart<iNbSamples)
-        {
-            Index iBatchEnd=iBatchStart+iBatchSizeLocal;
-            if(iBatchEnd>iNbSamples)
-                iBatchEnd=iNbSamples;
-
-            const MatrixFloat mSample = rowRange(mSampleShuffled, iBatchStart, iBatchEnd);
-            const MatrixFloat mTarget = rowRange(mTruthShuffled, iBatchStart, iBatchEnd);
-
-			train_batch(mSample, mTarget);
-		
-            iBatchStart=iBatchEnd;
-        }
+		train_one_epoch(iBatchSizeLocal, mSampleShuffled, mTruthShuffled);
 
 		_pNet->set_train_mode(false);
 
@@ -672,5 +660,25 @@ void NetTrain::update_class_weight()
 	}
 
 	_pLoss->set_class_balancing(mClassWeight);
+}
+/////////////////////////////////////////////////////////////////////////////////////////////
+void NetTrain::train_one_epoch(Index iBatchSize,const MatrixFloat& mSampleShuffled, const MatrixFloat& mTruthShuffled)
+{
+	Index iNbSamples = mSampleShuffled.rows();
+	Index iBatchStart = 0;
+
+	while (iBatchStart < iNbSamples)
+	{
+		Index iBatchEnd = iBatchStart + iBatchSize;
+		if (iBatchEnd > iNbSamples)
+			iBatchEnd = iNbSamples;
+
+		const MatrixFloat mSample = rowRange(mSampleShuffled, iBatchStart, iBatchEnd);
+		const MatrixFloat mTarget = rowRange(mTruthShuffled, iBatchStart, iBatchEnd);
+
+		train_batch(mSample, mTarget);
+
+		iBatchStart = iBatchEnd;
+	}
 }
 /////////////////////////////////////////////////////////////////////////////////////////////

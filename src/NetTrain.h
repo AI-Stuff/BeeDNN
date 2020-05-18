@@ -89,9 +89,12 @@ public:
 	float get_current_validation_loss() const;
 	float get_current_validation_accuracy() const;
 
-private:
+protected:
+	virtual void train_one_epoch(Index iBatchSize, const MatrixFloat& mSampleShuffled, const MatrixFloat& mTruthShuffled);
 	void train_batch(const MatrixFloat& mSample, const MatrixFloat& mTruth); //all the backprop is here	
-    void update_class_weight(); // compute balanced class weight loss (if asked) and update loss
+
+private:
+	void update_class_weight(); // compute balanced class weight loss (if asked) and update loss
 	void add_online_statistics(const MatrixFloat&mPredicted, const MatrixFloat&mTruth);	//online statistics, i.e. loss, accuracy ..
 	void clear_optimizers();
 
