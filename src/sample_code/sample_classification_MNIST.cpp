@@ -7,7 +7,7 @@
 using namespace std;
 
 #include "Net.h"
-#include "NetTrain.h"
+#include "NetTrainHogWild.h"
 #include "MNISTReader.h"
 #include "ConfusionMatrix.h"
 
@@ -17,7 +17,7 @@ using namespace std;
 #include "LayerSoftmax.h"
 
 Net net;
-NetTrain netTrain;
+NetTrainHogWild netTrain;
 MatrixFloat mRefImages, mRefLabels, mValImages, mValLabels;
 int iEpoch;
 chrono::steady_clock::time_point start;
@@ -57,10 +57,10 @@ int main()
 	mRefImages/= 256.f;
   
 	//create simple net:
-	net.add(new LayerDense(784, 128));
+	net.add(new LayerDense(784, 256));
 	net.add(new LayerActivation("Relu"));
 	net.add(new LayerDropout(0.2f)); //reduce overfitting
-	net.add(new LayerDense(128, 10));
+	net.add(new LayerDense(256, 10));
 	net.add(new LayerSoftmax());
 
 	//setup train options
