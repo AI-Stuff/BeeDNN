@@ -22,6 +22,8 @@ public:
 
 protected:
 	virtual void train_one_epoch(const MatrixFloat& mSampleShuffled, const MatrixFloat& mTruthShuffled) override;
+//	virtual void train_batch(const MatrixFloat& mSample, const MatrixFloat& mTruth) override; //all the backprop is here	
+
 };
 
 #endif

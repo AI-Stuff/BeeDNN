@@ -293,7 +293,7 @@ bool toFile(const string& sFile, const MatrixFloat & m)
 }
 ///////////////////////////////////////////////////////////////////////////
 //create a row view starting at iStartRow ending at iEndRow (not included)
-const MatrixFloat rowRange(const MatrixFloat& m, Index iStartRow, Index iEndRow)
+const MatrixFloat rowView(const MatrixFloat& m, Index iStartRow, Index iEndRow)
 {
     assert(iStartRow < iEndRow); //iEndRow not included
     assert(m.rows() >= iEndRow);

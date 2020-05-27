@@ -99,7 +99,14 @@ NetTrain& NetTrain::operator=(const NetTrain& other)
 	_fValidationAccuracy = other._fValidationAccuracy;
 	_iNbLayers=other._iNbLayers;
 
-	set_optimizer(other._sOptimizer);
+	clear_optimizers();
+	_sOptimizer = other._sOptimizer;
+	for (int i = 0; i < _optimizers.size(); i++)
+	{
+		_optimizers.push_back(other._optimizers[i]); //todo add copy
+
+	}
+
     _fLearningRate=other._fLearningRate;
     _fDecay=other._fDecay;
     _fMomentum=other._fMomentum;
@@ -303,8 +310,8 @@ float NetTrain::compute_loss_accuracy(const MatrixFloat &mSamples, const MatrixF
 			iEnd = iNbSamples;
 		Index iBatchSize = iEnd - iStart;
 
-		mSamplesBatch = rowRange(mSamples, iStart, iEnd);
-		mTruthBatch = rowRange(mTruth, iStart, iEnd);
+		mSamplesBatch = rowView(mSamples, iStart, iEnd);
+		mTruthBatch = rowView(mTruth, iStart, iEnd);
 		
 		_pNet->forward(mSamplesBatch, mOut);
 		fLoss+= _pLoss->compute(mOut, mTruthBatch);
@@ -513,6 +520,9 @@ void NetTrain::train()
 /////////////////////////////////////////////////////////////////////////////////////////////
 void NetTrain::train_batch(const MatrixFloat& mSample, const MatrixFloat& mTruth)
 {
+	assert(_pNet);
+	assert(_optimizers.size() == _iNbLayers * 2);
+
 	//forward pass with store
 	_inOut[0] = mSample;
 	for (size_t i = 0; i < _iNbLayers; i++)
@@ -674,8 +684,8 @@ void NetTrain::train_one_epoch(const MatrixFloat& mSampleShuffled, const MatrixF
 		if (iBatchEnd > iNbSamples)
 			iBatchEnd = iNbSamples;
 
-		const MatrixFloat mSample = rowRange(mSampleShuffled, iBatchStart, iBatchEnd);
-		const MatrixFloat mTarget = rowRange(mTruthShuffled, iBatchStart, iBatchEnd);
+		const MatrixFloat mSample = rowView(mSampleShuffled, iBatchStart, iBatchEnd);
+		const MatrixFloat mTarget = rowView(mTruthShuffled, iBatchStart, iBatchEnd);
 
 		train_batch(mSample, mTarget);
 
