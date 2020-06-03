@@ -30,73 +30,57 @@ void NetTrainHogwild::train_one_epoch( const MatrixFloat& mSampleShuffled, const
 {
 	Index iNbThread = omp_get_max_threads();
 	Index iNbSamples = mSampleShuffled.rows();
+	
+	Net& netShare = *_pNet;
+	vector<Net> vNet(iNbThread);
+	for (int i = 0; i < iNbThread; i++)
+		vNet[i] = netShare;
+
+	vector<NetTrain> vNetTrain(iNbThread);
+	for (int i = 0; i < iNbThread; i++)
+	{
+		vNetTrain[i] = *this;
+		vNetTrain[i].set_net(vNet[i]);
+	}
 
 	//compute nb batches taking into account the last smaller one
 	Index iNbBatches = iNbSamples / _iBatchSizeAdjusted;
-	if (iNbBatches*_iBatchSizeAdjusted < iNbSamples)
-		iNbBatches++;
+//	if (iNbBatches*_iBatchSizeAdjusted < iNbSamples)
+//		iNbBatches++;
 
-	Net netShare(*_pNet);
-	NetTrain trainShare;
-	trainShare = *this;
-
-#pragma omp parallel for
+	
+//#pragma omp parallel for
 	for(Index iBatch=0;iBatch<iNbBatches;iBatch++)
 	{
-		Net n(netShare);
-		NetTrain nt = trainShare;
-		nt.set_net(n);
+		int iThread= omp_get_thread_num();
 
 		// compute mini batches range
 		Index iBatchStart = iBatch* _iBatchSizeAdjusted;
 		Index iBatchEnd = iBatchStart + _iBatchSizeAdjusted;
-		if (iBatchEnd > iNbSamples)
+	/*	if (iBatchEnd > iNbSamples)
 			iBatchEnd = iNbSamples;
-
+		*/
 		const MatrixFloat mSample = rowView(mSampleShuffled, iBatchStart, iBatchEnd);
-		const MatrixFloat mTarget = rowView(mTruthShuffled, iBatchStart, iBatchEnd);
+		const MatrixFloat mTruth = rowView(mTruthShuffled, iBatchStart, iBatchEnd);
 
-		nt.train_batch(mSample, mTarget);
+		NetTrain& nt = vNetTrain[iThread];
+		Net& n = nt.net();
 
-		netShare = n;
+		for (int i = 0; i < n.size(); i++)
+		{
+			n.layer(i).weights() = netShare.layer(i).weights();
+			n.layer(i).bias() = netShare.layer(i).bias();
+		}
 
+		nt.train_batch(mSample, mTruth);
+
+		for (int i = 0; i < n.size(); i++)
+		{
+			netShare.layer(i).weights() = n.layer(i).weights();
+			netShare.layer(i).bias() = n.layer(i).bias();
+		}
+					
 		iBatchStart = iBatchEnd;
 	}
 }
 /////////////////////////////////////////////////////////////////////////////////////////////
-/*void NetTrainHogwild::train_batch(const MatrixFloat& mSample, const MatrixFloat& mTruth)
-{
-	//forward pass with store
-	_inOut[0] = mSample;
-	for (size_t i = 0; i < _iNbLayers; i++)
-		_pNet->layer(i).forward(_inOut[i], _inOut[i + 1]);
-
-	//compute error gradient
-	_pLoss->compute_gradient(_inOut[_iNbLayers], mTruth, _gradient[_iNbLayers]);
-
-	//backward pass with optimizer
-	for (int i = (int)_iNbLayers - 1; i >= 0; i--)
-	{
-		Layer& l = _pNet->layer(i);
-		l.backpropagation(_inOut[i], _gradient[i + 1], _gradient[i]);
-
-		if (l.has_weight())
-		{
-			if (_pRegularizer)
-				_pRegularizer->apply(l.weights(), l.gradient_weights());
-
-			_optimizers[2 * i]->optimize(l.weights(), l.gradient_weights());
-		}
-
-		if (l.has_bias())
-		{
-			//bias does not need regularization 
-			_optimizers[2 * i + 1]->optimize(l.bias(), l.gradient_bias());
-		}
-	}
-
-	//compute and save statistics
-	add_online_statistics(_inOut[_iNbLayers], mTruth);
-}
-/////////////////////////////////////////////////////////////////////////////////////////////
-*/

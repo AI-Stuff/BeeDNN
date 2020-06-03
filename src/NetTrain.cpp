@@ -103,8 +103,7 @@ NetTrain& NetTrain::operator=(const NetTrain& other)
 	_sOptimizer = other._sOptimizer;
 	for (int i = 0; i < _optimizers.size(); i++)
 	{
-		_optimizers.push_back(other._optimizers[i]); //todo add copy
-
+		_optimizers.push_back(other._optimizers[i]); //todo copy
 	}
 
     _fLearningRate=other._fLearningRate;
