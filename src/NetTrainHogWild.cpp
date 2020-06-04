@@ -34,8 +34,10 @@ void NetTrainHogwild::train_one_epoch( const MatrixFloat& mSampleShuffled, const
 	Net& netShare = *_pNet;
 	vector<Net> vNet(iNbThread);
 	for (int i = 0; i < iNbThread; i++)
+	{
 		vNet[i] = netShare;
-
+		vNet[i].set_train_mode(true); //todo remove
+	}
 	vector<NetTrain> vNetTrain(iNbThread);
 	for (int i = 0; i < iNbThread; i++)
 	{
@@ -49,7 +51,7 @@ void NetTrainHogwild::train_one_epoch( const MatrixFloat& mSampleShuffled, const
 //		iNbBatches++;
 
 	
-//#pragma omp parallel for
+#pragma omp parallel for
 	for(Index iBatch=0;iBatch<iNbBatches;iBatch++)
 	{
 		int iThread= omp_get_thread_num();

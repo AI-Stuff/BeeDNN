@@ -101,9 +101,9 @@ NetTrain& NetTrain::operator=(const NetTrain& other)
 
 	clear_optimizers();
 	_sOptimizer = other._sOptimizer;
-	for (int i = 0; i < _optimizers.size(); i++)
+	for (int i = 0; i < other._optimizers.size(); i++)
 	{
-		_optimizers.push_back(other._optimizers[i]); //todo copy
+		_optimizers.push_back(other._optimizers[i]->clone()); //todo copy
 	}
 
     _fLearningRate=other._fLearningRate;
@@ -139,7 +139,7 @@ void NetTrain::set_net(Net& net)
 	if (_iNbLayers != 0)
 		_pNet->layers()[0]->set_first_layer(true);
 	
-	clear_optimizers();
+//	clear_optimizers(); todo keep ?
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////
 Net& NetTrain::net()

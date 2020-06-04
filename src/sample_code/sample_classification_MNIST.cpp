@@ -18,6 +18,7 @@ using namespace std;
 
 Net net;
 NetTrainHogwild netTrain;
+//NetTrain netTrain;
 MatrixFloat mRefImages, mRefLabels, mValImages, mValLabels;
 int iEpoch;
 chrono::steady_clock::time_point start;
@@ -71,8 +72,6 @@ int main()
 	netTrain.set_epoch_callback(epoch_callback); //optional , to show the progress
 	netTrain.set_train_data(mRefImages, mRefLabels);
 	netTrain.set_validation_data(mValImages, mValLabels); //optional, not used for training, helps to keep the final best model
-	netTrain.set_optimizer("SGD");
-
 
 	// train net
 	cout << "Training..." << endl << endl;
